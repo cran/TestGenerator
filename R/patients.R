@@ -279,6 +279,7 @@ createOutputFolder <- function(outputPath, testName) {
 #' @param pathJson Directory where the sample populations in json are located. If NULL, gets the default inst/testCases directory.
 #' @param testName Name of the sample population JSON file. If NULL it will push the first sample population in the testCases directory.
 #' @param cdmVersion cdm version, default "5.3".
+#' @param cdmName Name of the cdm, default NULL.
 #'
 #' @return A CDM reference object with a sample population.
 #' @import dplyr cli
@@ -297,7 +298,8 @@ createOutputFolder <- function(outputPath, testName) {
 #' @export
 patientsCDM <- function(pathJson = NULL,
                         testName = NULL,
-                        cdmVersion = "5.3") {
+                        cdmVersion = "5.3",
+                        cdmName = NULL) {
 
   if (is.null(pathJson)) {
     outputFolder <- testthat::test_path("testCases")
@@ -350,19 +352,23 @@ patientsCDM <- function(pathJson = NULL,
   conn <- DBI::dbConnect(duckdb::duckdb(CDMConnector::eunomia_dir("empty_cdm")))
   cdm <- CDMConnector::cdmFromCon(con = conn,
                                   cdmSchema = "main",
-                                  writeSchema = "main")
+                                  writeSchema = "main",
+                                  cdmName = cdmName)
 
   # Read the JSON file into R
   jsonData <- jsonlite::fromJSON(fileName)
   # Check for the expected columns in the CDM
   for (tableName in names(jsonData)) {
-    # tableName <- "vocabulary"
-    currentCoulumns <- names(jsonData[[tableName]])
-    expectedColumns <- spec_cdm_field[[cdmVersion]] %>%
-      dplyr::filter(cdmTableName == tableName) %>%
-      dplyr::pull(cdmFieldName)
-    jsonData[[tableName]] <- jsonData[[tableName]] %>%
-      select(currentCoulumns[currentCoulumns %in% expectedColumns])
+    # tableName <- "person"
+    classTable <- class(jsonData[[tableName]])
+    if (classTable == "data.frame") {
+      currentCoulumns <- names(jsonData[[tableName]])
+      expectedColumns <- spec_cdm_field[[cdmVersion]] %>%
+        dplyr::filter(cdmTableName == tableName) %>%
+        dplyr::pull(cdmFieldName)
+      jsonData[[tableName]] <- jsonData[[tableName]] %>%
+        select(currentCoulumns[currentCoulumns %in% expectedColumns])
+    }
   }
 
   # Convert the JSON data into a data frame and append it to the blank CDM
@@ -374,4 +380,26 @@ patientsCDM <- function(pathJson = NULL,
   }
   cli::cli_alert_success("Patients pushed to blank CDM successfully")
   return(cdm)
+}
+
+getEmptyCDM <- function(cdmName, cdmVersion) {
+
+  vocabPath <- file.path(Sys.getenv("EUNOMIA_DATA_FOLDER"),
+                         glue::glue("empty_cdm_{cdmVersion}.zip"))
+
+  if (!file.exists(vocabPath)) {
+    CDMConnector::downloadEunomiaData(datasetName = "empty_cdm",
+                                      cdmVersion = cdmVersion,
+                                      pathToData = Sys.getenv("EUNOMIA_DATA_FOLDER"),
+                                      overwrite = TRUE)
+  }
+
+  conn <- DBI::dbConnect(duckdb::duckdb(CDMConnector::eunomia_dir("empty_cdm")))
+  cdm <- CDMConnector::cdmFromCon(con = conn,
+                                  cdmSchema = "main",
+                                  writeSchema = "main",
+                                  cdmName = cdmName)
+
+  return(cdm)
+
 }
