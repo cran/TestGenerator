@@ -1,7 +1,7 @@
 Package: TestGenerator
 Type: Package
 Title: Integration Unit Tests for Pharmacoepidemiological Studies
-Version: 0.4.0
+Version: 0.5.0
 Authors@R: c(
     person("Cesar", "Barboza", , "c.barboza@darwin-eu.org", role = c("aut"), comment = c(ORCID = "0009-0002-4453-3071")),
     person("Ioanna", "Nika", , "i.nika@darwin-eu.org", role = "aut"),
@@ -12,21 +12,21 @@ Maintainer: Ger Inberg <g.inberg@erasmusmc.nl>
 Description: An R interface to load testing data in the 'OMOP' Common Data Model ('CDM'). An input file, csv or xlsx, can be converted to a 'CDMConnector' object. This object can be used to execute and test studies that use the 'CDM' <https://www.ohdsi.org/data-standardization/>.
 License: Apache License (>= 2)
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Depends: R (>= 4.1.0)
-Imports: jsonlite, readxl, readr, CDMConnector, DBI, dplyr, checkmate,
-        glue, duckdb, cli, rlang, withr, ggplot2, tibble, testthat,
-        arrow, openxlsx, omopgenerics
+Imports: jsonlite, readxl, readr, CDMConnector (>= 2.3.0), DBI, dplyr,
+        checkmate, glue, duckdb, cli, rlang, withr, ggplot2, tibble,
+        testthat, arrow, openxlsx, omopgenerics
 Suggests: knitr, rmarkdown, curl, httr
 Config/testthat/edition: 3
 URL: https://github.com/darwin-eu/TestGenerator,
         https://darwin-eu.github.io/TestGenerator/
 BugReports: https://github.com/darwin-eu/TestGenerator/issues
 NeedsCompilation: no
-Packaged: 2025-05-11 19:32:46 UTC; ginberg
+Packaged: 2026-01-14 08:19:59 UTC; ginberg
 Author: Cesar Barboza [aut] (ORCID: <https://orcid.org/0009-0002-4453-3071>),
   Ioanna Nika [aut],
   Ger Inberg [aut, cre] (ORCID: <https://orcid.org/0000-0001-8993-8748>),
   Adam Black [aut] (ORCID: <https://orcid.org/0000-0001-5576-8701>)
 Repository: CRAN
-Date/Publication: 2025-05-27 07:30:02 UTC
+Date/Publication: 2026-01-14 09:00:02 UTC

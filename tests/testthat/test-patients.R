@@ -11,6 +11,20 @@ test_that("checkTablesColumns function works csv with test data", {
                                         "death", "note_nlp", "specimen", "fact_relationship"))
 })
 
+test_that("checkTablesColumns function works csv with test data - some tables and columns in uppercase", {
+  filePath <- testthat::test_path("test_cdm_data_uppercase.xlsx")
+  checkmate::assertCharacter(filePath)
+  checkmate::assertFileExists(filePath)
+  cdmVersion <- "5.3"
+  listPatientTables <- checkTablesColumns(cdmVersion, filePath, extraTable = FALSE)
+
+  expect_in(names(listPatientTables), c("person", "observation_period", "condition_occurrence", "drug_exposure"))
+
+  lapply(names(listPatientTables), FUN = function(tableName) {
+    expect_true(identical(colnames(listPatientTables[[tableName]]), tolower(colnames(listPatientTables[[tableName]]))))
+  })
+})
+
 test_that("checkTablesColumns function works csv with table 'pregnancy'", {
   filePath <- testthat::test_path("test_cdm_data_pregnancy.xlsx")
   checkmate::assertCharacter(filePath)
@@ -200,4 +214,14 @@ test_that("convert ids function", {
     unlink(filePath, recursive = TRUE)
     duckdb::duckdb_shutdown(duckdb::duckdb())
   }
+})
+
+test_that("Patients to CDM version 5.4", {
+  cdmVersion <- "5.4"
+  filePath <- testthat::test_path("test_cdm_data_pregnancy.xlsx")
+  TestGenerator::readPatients(filePath = filePath, testName = "pregnancy", outputPath = NULL, extraTable = TRUE)
+  cdm <- TestGenerator::patientsCDM(pathJson = NULL, testName = "pregnancy", cdmVersion = cdmVersion)
+  expect_equal(class(cdm), "cdm_reference")
+  expect_equal(CDMConnector::snapshot(cdm) %>% dplyr::pull("cdm_version"), cdmVersion)
+  duckdb::duckdb_shutdown(duckdb::duckdb())
 })
