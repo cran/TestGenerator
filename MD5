@@ -1,14 +1,15 @@
-b158b3ccecc77a5141cd4cfb0ec75e3b *DESCRIPTION
+c8d8fb10dfeb60b064b0279f0b878296 *DESCRIPTION
 fd78e4539b12e6cf2dc5056bc217e63f *NAMESPACE
-b2300a7d9a797648332bc109d6195309 *NEWS.md
+4f642570eed080a40beeeb2bed24d1be *NEWS.md
 178099d50573ee6b490e12bd77f08cfb *R/download.R
 9c987059d43b83fd0270bb91706cb25b *R/generateTestTables.R
 090640b51e348f3fad9e596a6ffd1455 *R/globals.R
-14f241da3a7fcf4f943b4531d424a27d *R/patients.R
+8b3080a67640b145fad459ce65a2e5d9 *R/patients.R
 96855f64f3f211919f7bafb31fac5ead *R/sysdata.rda
 16cc478a5d3271a3cf2a3b3af3b2b85d *R/utilsCdm.R
 41e126d7559890758aece89d9161cd8c *R/visualisations.R
-7848caff759fb72bf1e41dfdcab53f7f *README.md
+8b6ba27a9d5d987a6a5d8ed1afcbe0ca *README.md
+a1a476a456dc1bed8301c756dea7037f *build/vignette.rds
 dd13b51353700f6dcdf10667c9723c0c *inst/cdmTableSpecifications/emptycdm_5.3/attribute_definition.parquet
 21b6baf22bc578642da765fba189f879 *inst/cdmTableSpecifications/emptycdm_5.3/care_site.parquet
 7fb429992b5d988dc0c9b98a2e886100 *inst/cdmTableSpecifications/emptycdm_5.3/cdm_source.parquet
@@ -86,6 +87,9 @@ eb0973cba049d1bedc1a296aeee7d4c1 *inst/cdmTableSpecifications/emptycdm_5.4/speci
 5aed402659a7f3e010fb2ddd394b9a0f *inst/cdmTableSpecifications/emptycdm_5.4/visit_detail.parquet
 947995ded74f3fbf7b46aa48e47b8a19 *inst/cdmTableSpecifications/emptycdm_5.4/visit_occurrence.parquet
 04390f1e07c89df75b14ce741a67e2db *inst/cdmTableSpecifications/emptycdm_5.4/vocabulary.parquet
+eff1a96fd0151f8f953d15e35cf138a7 *inst/doc/gettingStarted.R
+b1ec5fb7e5baddc8381677d4a6d5067c *inst/doc/gettingStarted.Rmd
+5fb9283242e882bc6834481b358d0b0a *inst/doc/gettingStarted.html
 be2d51137cc1356509396b93b5a2309f *inst/extdata/icu_sample_population.xlsx
 868bb9992f0952fbae66c8d14f5ccb18 *inst/extdata/mimic_sample/condition_occurrence.csv
 990ad7a98640b9ff8c4919590287407f *inst/extdata/mimic_sample/drug_exposure.csv
@@ -107,7 +111,7 @@ e7e7c708957846bb4b1614a588631f9c *man/downloadTestData.Rd
 7fe85289aaf0528a18978fdca03a720c *man/figures/README-unnamed-chunk-8-1.png
 f804d57e36b1225495d9d53e692ab7a3 *man/generateTestTables.Rd
 63e0225e023ec45dca41724a2359dc2e *man/graphCohort.Rd
-9cf5afebeeabb7b12151757a07824d0c *man/patientsCDM.Rd
+1f556be9ca75d27f5207e6f742db3762 *man/patientsCDM.Rd
 36528ff74b0bca449c089d550d80d009 *man/readPatients.Rd
 b47edc18752d2d6c9052c5fdbecaa60e *man/readPatients.csv.Rd
 72f61f97c5e715e95039e6ef34b6b97d *man/readPatients.xl.Rd
@@ -121,7 +125,7 @@ c2ea425644e2ee6ab07b0f74ca55689d *tests/testthat/mimic_sample/measurement.csv
 08025ec857cd8ba895b4af680668937e *tests/testthat/mimic_sample/visit_detail.csv
 55a6647548c9d0e857eb6b3c686f4c6f *tests/testthat/mimic_sample/visit_occurrence.csv
 e9b5a0353732de9bfb52b1763e531ead *tests/testthat/test-generateTestTable.R
-65c4957f5f81c97bd54860b90701a037 *tests/testthat/test-patients.R
+5bceda2a937ba54906e183859fae9114 *tests/testthat/test-patients.R
 c0d61bafe03d6a7871eee986c61e9045 *tests/testthat/test-utilsCdm.R
 68e62822225313b243417fa6b08319d4 *tests/testthat/test-visualisations.R
 622d9fe0fee1a9f6715d0a702d29f7e6 *tests/testthat/testCases/basic.json
@@ -139,3 +143,4 @@ d0b04054b16064c9a943e0fa328f5466 *tests/testthat/testCases/test.json
 8d05af0ec442ce6434a1d9edbf82a126 *tests/testthat/test_cdm_data_extra_pregnancy.xlsx
 258aaeabc309cb4bd690a70662342d6f *tests/testthat/test_cdm_data_pregnancy.xlsx
 906cd64f768d2b6df56296f41abc91b2 *tests/testthat/test_cdm_data_uppercase.xlsx
+b1ec5fb7e5baddc8381677d4a6d5067c *vignettes/gettingStarted.Rmd

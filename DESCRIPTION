@@ -1,7 +1,7 @@
 Package: TestGenerator
 Type: Package
 Title: Integration Unit Tests for Pharmacoepidemiological Studies
-Version: 0.6.0
+Version: 0.7.0
 Authors@R: c(
     person("Cesar", "Barboza", , "c.barboza@darwin-eu.org", role = c("aut"), comment = c(ORCID = "0009-0002-4453-3071")),
     person("Ioanna", "Nika", , "i.nika@darwin-eu.org", role = "aut"),
@@ -16,17 +16,18 @@ RoxygenNote: 7.3.3
 Depends: R (>= 4.1.0)
 Imports: jsonlite, readxl, readr, CDMConnector (>= 2.5.1), DBI, dplyr,
         checkmate, glue, duckdb, cli, rlang, withr, ggplot2, tibble,
-        testthat, openxlsx, omopgenerics
+        testthat, openxlsx, omopgenerics, RPostgres
 Suggests: knitr, rmarkdown, curl, httr, odbc, usethis
+VignetteBuilder: knitr
 Config/testthat/edition: 3
 URL: https://github.com/darwin-eu/TestGenerator,
         https://darwin-eu.github.io/TestGenerator/
 BugReports: https://github.com/darwin-eu/TestGenerator/issues
 NeedsCompilation: no
-Packaged: 2026-04-16 14:35:11 UTC; ginberg
+Packaged: 2026-04-30 14:48:57 UTC; ginberg
 Author: Cesar Barboza [aut] (ORCID: <https://orcid.org/0009-0002-4453-3071>),
   Ioanna Nika [aut],
   Ger Inberg [aut, cre] (ORCID: <https://orcid.org/0000-0001-8993-8748>),
   Adam Black [aut] (ORCID: <https://orcid.org/0000-0001-5576-8701>)
 Repository: CRAN
-Date/Publication: 2026-04-16 15:12:05 UTC
+Date/Publication: 2026-04-30 16:20:02 UTC
