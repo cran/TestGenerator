@@ -437,48 +437,23 @@ real CDM. The package includes example cohort definitions under
 dates, durations, or intersections that your study should produce for
 the micro population.</p>
 </div>
-<div id="visualise-cohort-timelines" class="section level2">
-<h2>Visualise Cohort Timelines</h2>
-<p><code>graphCohort()</code> can help inspect whether cohort
-intersections and timing look as expected for a single subject.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>diazepam <span class="ot">&lt;-</span> cdm[[<span class="st">&quot;test_cohorts&quot;</span>]] <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="fu">filter</span>(cohort_definition_id <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>hospitalisation <span class="ot">&lt;-</span> cdm[[<span class="st">&quot;test_cohorts&quot;</span>]] <span class="sc">|&gt;</span></span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>  <span class="fu">filter</span>(cohort_definition_id <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
-<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>icu_visit <span class="ot">&lt;-</span> cdm[[<span class="st">&quot;test_cohorts&quot;</span>]] <span class="sc">|&gt;</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="fu">filter</span>(cohort_definition_id <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="fu">collect</span>()</span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="fu">graphCohort</span>(</span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>  <span class="at">subject_id =</span> <span class="dv">4</span>,</span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  <span class="at">cohorts =</span> <span class="fu">list</span>(</span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>    <span class="at">diazepam =</span> diazepam,</span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>    <span class="at">hospitalisation =</span> hospitalisation,</span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>    <span class="at">icu_visit =</span> icu_visit</span>
-<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>  )</span>
-<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>)</span></code></pre></div>
-</div>
 <div id="start-from-a-blank-excel-template" class="section level2">
 <h2>Start from a Blank Excel Template</h2>
 <p>If you want to design a new test population from scratch, create an
 Excel workbook with the required CDM table columns.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">generateTestTables</span>(</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="at">tableNames =</span> <span class="fu">c</span>(</span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>    <span class="st">&quot;person&quot;</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>    <span class="st">&quot;observation_period&quot;</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    <span class="st">&quot;visit_occurrence&quot;</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    <span class="st">&quot;condition_occurrence&quot;</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>    <span class="st">&quot;drug_exposure&quot;</span>,</span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>    <span class="st">&quot;measurement&quot;</span></span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  ),</span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="at">cdmVersion =</span> <span class="st">&quot;5.4&quot;</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="at">outputFolder =</span> output_path,</span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">&quot;my_test_population&quot;</span></span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">generateTestTables</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  <span class="at">tableNames =</span> <span class="fu">c</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>    <span class="st">&quot;person&quot;</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="st">&quot;observation_period&quot;</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>    <span class="st">&quot;visit_occurrence&quot;</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>    <span class="st">&quot;condition_occurrence&quot;</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>    <span class="st">&quot;drug_exposure&quot;</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>    <span class="st">&quot;measurement&quot;</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  ),</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>  <span class="at">cdmVersion =</span> <span class="st">&quot;5.4&quot;</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  <span class="at">outputFolder =</span> output_path,</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">&quot;my_test_population&quot;</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>)</span></code></pre></div>
 <p>Fill in the workbook rows for the small set of patients needed by
 your test, then pass the completed workbook to
 <code>readPatients()</code>.</p>
@@ -488,85 +463,26 @@ your test, then pass the completed workbook to
 <p>For CSV inputs, place one file per CDM table in a folder. File names
 should match the table names, for example <code>person.csv</code> and
 <code>observation_period.csv</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>csv_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="st">&quot;extdata&quot;</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="st">&quot;mimic_sample&quot;</span>,</span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="at">package =</span> <span class="st">&quot;TestGenerator&quot;</span></span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>)</span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="fu">readPatients.csv</span>(</span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="at">filePath =</span> csv_path,</span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  <span class="at">testName =</span> <span class="st">&quot;mimic_sample&quot;</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>  <span class="at">outputPath =</span> output_path,</span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>  <span class="at">cdmVersion =</span> <span class="st">&quot;5.4&quot;</span></span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>csv_path <span class="ot">&lt;-</span> <span class="fu">system.file</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>  <span class="st">&quot;extdata&quot;</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  <span class="st">&quot;mimic_sample&quot;</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  <span class="at">package =</span> <span class="st">&quot;TestGenerator&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>)</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="fu">readPatients.csv</span>(</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  <span class="at">filePath =</span> csv_path,</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="at">testName =</span> <span class="st">&quot;mimic_sample&quot;</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="at">outputPath =</span> output_path,</span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="at">cdmVersion =</span> <span class="st">&quot;5.4&quot;</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>)</span></code></pre></div>
 <p>For source datasets with very large integer identifiers, set
 <code>reduceLargeIds = TRUE</code>.</p>
-</div>
-<div id="remote-databases" class="section level2">
-<h2>Remote Databases</h2>
-<p>DuckDB is the default and is usually enough for unit tests. When you
-need to test SQL translation on another backend,
-<code>patientsCDM()</code> can also create a test CDM in Spark, SQL
-Server, or PostgreSQL.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>cdm <span class="ot">&lt;-</span> <span class="fu">patientsCDM</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  <span class="at">pathJson =</span> output_path,</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  <span class="at">testName =</span> <span class="st">&quot;icu_sample&quot;</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>  <span class="at">cdmVersion =</span> <span class="st">&quot;5.4&quot;</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>  <span class="at">dbms =</span> <span class="st">&quot;postgresql&quot;</span></span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>)</span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co"># Drop the remote test schema and disconnect when finished.</span></span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a><span class="fu">cleanupTestCdm</span>(cdm)</span></code></pre></div>
-<p>Remote database connections require the relevant environment
-variables to be configured before calling
-<code>patientsCDM()</code>.</p>
-<table>
-<colgroup>
-<col width="50%" />
-<col width="50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Backend</th>
-<th>Required environment variables</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Spark</td>
-<td><code>DATABRICKS_HOST</code>, <code>DATABRICKS_TOKEN</code>,
-<code>DATABRICKS_HTTPPATH</code></td>
-</tr>
-<tr class="even">
-<td>SQL Server</td>
-<td><code>DARWIN_SQLSERVER_SERVER</code>,
-<code>DARWIN_SQLSERVER_DBNAME</code>,
-<code>DARWIN_SQLSERVER_PORT</code>, <code>DARWIN_SQLSERVER_USER</code>,
-<code>DARWIN_SQLSERVER_PASSWORD</code></td>
-</tr>
-<tr class="odd">
-<td>PostgreSQL</td>
-<td><code>DARWIN_POSTGRESQL_SERVER</code>,
-<code>DARWIN_POSTGRESQL_DBNAME</code>,
-<code>DARWIN_POSTGRESQL_PORT</code>,
-<code>DARWIN_POSTGRESQL_USER</code>,
-<code>DARWIN_POSTGRESQL_PASSWORD</code></td>
-</tr>
-</tbody>
-</table>
-<p>Spark also reads <code>DATABRICKS_USER</code> and
-<code>DATABRICKS_WORKSPACE</code> when they are set. If they are not
-set, TestGenerator uses <code>token</code> as the Databricks user and
-<code>hive_metastore</code> as the workspace/catalog. SQL Server reads
-<code>SQL_SERVER_DRIVER</code> when it is set; otherwise it uses
-<code>ODBC Driver 18 for SQL Server</code>.</p>
 </div>
 <div id="clean-up" class="section level2">
 <h2>Clean Up</h2>
 <p>For local DuckDB examples, disconnect when the test has finished.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>DBI<span class="sc">::</span><span class="fu">dbDisconnect</span>(CDMConnector<span class="sc">::</span><span class="fu">cdmCon</span>(cdm), <span class="at">shutdown =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="fu">unlink</span>(output_path, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>DBI<span class="sc">::</span><span class="fu">dbDisconnect</span>(CDMConnector<span class="sc">::</span><span class="fu">cdmCon</span>(cdm), <span class="at">shutdown =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="fu">unlink</span>(output_path, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 
 

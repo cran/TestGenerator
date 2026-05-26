@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Remote databases</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Remote databases</h1>
+
+
+
+<p>DuckDB is the default backend in TestGenerator, and it is usually the
+fastest place to start. Remote database testing is useful when you also
+want to check that your study code works on another SQL engine. This is
+especially helpful for code that will run in PostgreSQL, SQL Server, or
+Databricks/Spark in production.</p>
+<p>The idea is the same as with local testing: you create a small,
+controlled test population, load it into a CDM, run your study code, and
+assert the expected result. The difference is that
+<code>patientsCDM()</code> uploads the test CDM to a remote database and
+returns a CDM reference connected to that backend.</p>
+<div id="use-patientscdm-with-a-remote-database" class="section level2">
+<h2>Use <code>patientsCDM()</code> with a remote database</h2>
+<p>First create a Unit Test Definition JSON file with
+<code>readPatients()</code> or <code>readPatients.csv()</code>. Then
+call <code>patientsCDM()</code> with the backend you want to test.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(TestGenerator)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>cdm <span class="ot">&lt;-</span> <span class="fu">patientsCDM</span>(</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>  <span class="at">pathJson =</span> <span class="st">&quot;tests/testthat/testCases&quot;</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="at">testName =</span> <span class="st">&quot;my_test_population&quot;</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="at">cdmVersion =</span> <span class="st">&quot;5.4&quot;</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>  <span class="at">dbms =</span> <span class="st">&quot;postgresql&quot;</span></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>)</span></code></pre></div>
+<p>The supported remote values for <code>dbms</code> are:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Backend</th>
+<th><code>dbms</code> value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PostgreSQL</td>
+<td><code>&quot;postgresql&quot;</code></td>
+</tr>
+<tr class="even">
+<td>SQL Server</td>
+<td><code>&quot;sqlserver&quot;</code></td>
+</tr>
+<tr class="odd">
+<td>Databricks/Spark</td>
+<td><code>&quot;databricks&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<p>For remote databases, <code>patientsCDM()</code> creates the CDM
+locally first, trims the vocabulary to what the test population needs,
+uploads the result to the remote database, and returns the remote CDM
+reference. By default, TestGenerator creates a temporary test schema for
+the upload. You can also provide <code>writeSchema</code> if you want to
+choose the schema name yourself.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>cdm <span class="ot">&lt;-</span> <span class="fu">patientsCDM</span>(</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="at">pathJson =</span> <span class="st">&quot;tests/testthat/testCases&quot;</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="at">testName =</span> <span class="st">&quot;my_test_population&quot;</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>  <span class="at">cdmVersion =</span> <span class="st">&quot;5.4&quot;</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  <span class="at">dbms =</span> <span class="st">&quot;sqlserver&quot;</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">writeSchema =</span> <span class="st">&quot;testgenerator_my_case&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>)</span></code></pre></div>
+<p>When the test has finished, clean up the remote schema and close the
+connection:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">cleanupTestCdm</span>(cdm)</span></code></pre></div>
+<p>This is important for shared remote databases. The test schemas are
+small, but cleaning them up keeps the database tidy and avoids name
+conflicts in later runs.</p>
+</div>
+<div id="environment-variables-for-direct-use" class="section level2">
+<h2>Environment variables for direct use</h2>
+<p>When you call <code>patientsCDM()</code> directly against a remote
+database, TestGenerator reads the connection details from environment
+variables.</p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Backend</th>
+<th>Required environment variables</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>PostgreSQL</td>
+<td><code>POSTGRESQL_SERVER</code>, <code>POSTGRESQL_DBNAME</code>,
+<code>POSTGRESQL_PORT</code>, <code>POSTGRESQL_USER</code>,
+<code>POSTGRESQL_PASSWORD</code></td>
+</tr>
+<tr class="even">
+<td>SQL Server</td>
+<td><code>SQLSERVER_SERVER</code>, <code>SQLSERVER_DBNAME</code>,
+<code>SQLSERVER_PORT</code>, <code>SQLSERVER_USER</code>,
+<code>SQLSERVER_PASSWORD</code></td>
+</tr>
+<tr class="odd">
+<td>Databricks/Spark</td>
+<td><code>DATABRICKS_HOST</code>, <code>DATABRICKS_TOKEN</code>,
+<code>DATABRICKS_HTTPPATH</code></td>
+</tr>
+</tbody>
+</table>
+<p>For Databricks, TestGenerator also reads <code>DATABRICKS_USER</code>
+and <code>DATABRICKS_WORKSPACE</code> when they are set. If they are not
+set, it uses <code>token</code> as the user and
+<code>hive_metastore</code> as the workspace/catalog.</p>
+<p>For SQL Server, TestGenerator reads <code>SQL_SERVER_DRIVER</code>
+when it is set. If it is not set, it uses
+<code>ODBC Driver 18 for SQL Server</code>.</p>
+<p>A typical local <code>.Renviron</code> setup could look like
+this:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="va">POSTGRESQL_SERVER</span><span class="op">=</span>localhost</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="va">POSTGRESQL_DBNAME</span><span class="op">=</span>cdm</span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="va">POSTGRESQL_PORT</span><span class="op">=</span>5432</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="va">POSTGRESQL_USER</span><span class="op">=</span>postgres</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="va">POSTGRESQL_PASSWORD</span><span class="op">=</span>your-password</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="va">SQLSERVER_SERVER</span><span class="op">=</span>localhost</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="va">SQLSERVER_DBNAME</span><span class="op">=</span>cdm</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="va">SQLSERVER_PORT</span><span class="op">=</span>1433</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="va">SQLSERVER_USER</span><span class="op">=</span>sa</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="va">SQLSERVER_PASSWORD</span><span class="op">=</span>your-password</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="va">DATABRICKS_HOST</span><span class="op">=</span>https://your-workspace.cloud.databricks.com</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="va">DATABRICKS_TOKEN</span><span class="op">=</span>your-token</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="va">DATABRICKS_HTTPPATH</span><span class="op">=</span>/sql/1.0/warehouses/your-warehouse</span></code></pre></div>
+<p>Use values that match your own database or Databricks workspace. The
+database user needs permission to create schemas, create tables, insert
+data, read data, and drop the test schema during cleanup.</p>
+</div>
+<div id="a-minimal-backend-test-pattern" class="section level2">
+<h2>A minimal backend test pattern</h2>
+<p>A backend-specific test usually follows this shape:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>testthat<span class="sc">::</span><span class="fu">test_that</span>(<span class="st">&quot;study logic works on PostgreSQL&quot;</span>, {</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>  cdm <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  <span class="fu">on.exit</span>({</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>    <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(cdm)) {</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>      TestGenerator<span class="sc">::</span><span class="fu">cleanupTestCdm</span>(cdm)</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>    }</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  }, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  cdm <span class="ot">&lt;-</span> TestGenerator<span class="sc">::</span><span class="fu">patientsCDM</span>(</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>    <span class="at">pathJson =</span> <span class="st">&quot;tests/testthat/testCases&quot;</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>    <span class="at">testName =</span> <span class="st">&quot;my_test_population&quot;</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>    <span class="at">cdmVersion =</span> <span class="st">&quot;5.4&quot;</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>    <span class="at">dbms =</span> <span class="st">&quot;postgresql&quot;</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>  )</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>  result <span class="ot">&lt;-</span> myPackage<span class="sc">::</span><span class="fu">runMyStudy</span>(cdm)</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>  testthat<span class="sc">::</span><span class="fu">expect_equal</span>(result<span class="sc">$</span>n_subjects, <span class="dv">3</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>})</span></code></pre></div>
+<p>The exact expectations should be specific to your micro population.
+Good tests usually check counts, dates, cohort entry and exit,
+exclusions, or any other result that should be predictable from the
+small input dataset.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

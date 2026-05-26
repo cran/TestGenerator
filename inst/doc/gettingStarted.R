@@ -67,28 +67,6 @@ knitr::opts_chunk$set(
 # 
 # expect_equal(excluded_records, 0)
 
-## ----graph-cohort-------------------------------------------------------------
-# diazepam <- cdm[["test_cohorts"]] |>
-#   filter(cohort_definition_id == 1) |>
-#   collect()
-# 
-# hospitalisation <- cdm[["test_cohorts"]] |>
-#   filter(cohort_definition_id == 2) |>
-#   collect()
-# 
-# icu_visit <- cdm[["test_cohorts"]] |>
-#   filter(cohort_definition_id == 3) |>
-#   collect()
-# 
-# graphCohort(
-#   subject_id = 4,
-#   cohorts = list(
-#     diazepam = diazepam,
-#     hospitalisation = hospitalisation,
-#     icu_visit = icu_visit
-#   )
-# )
-
 ## ----generate-template--------------------------------------------------------
 # generateTestTables(
 #   tableNames = c(
@@ -117,17 +95,6 @@ knitr::opts_chunk$set(
 #   outputPath = output_path,
 #   cdmVersion = "5.4"
 # )
-
-## ----remote-cdm---------------------------------------------------------------
-# cdm <- patientsCDM(
-#   pathJson = output_path,
-#   testName = "icu_sample",
-#   cdmVersion = "5.4",
-#   dbms = "postgresql"
-# )
-# 
-# # Drop the remote test schema and disconnect when finished.
-# cleanupTestCdm(cdm)
 
 ## ----cleanup------------------------------------------------------------------
 # DBI::dbDisconnect(CDMConnector::cdmCon(cdm), shutdown = TRUE)
